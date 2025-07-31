@@ -1,0 +1,380 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000000;
+    color: #ffffff;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Login Button */
+.login-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #333;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.login-button:hover {
+    border-color: #ff0000;
+    background: rgba(255, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+}
+
+.login-button i {
+    font-size: 16px;
+    color: #ff0000;
+}
+
+.login-button span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Side Panels */
+.side-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #333;
+    padding: 20px;
+}
+
+.left-panel {
+    border-right: 1px solid #333;
+}
+
+.right-panel {
+    border-left: 1px solid #333;
+}
+
+.attack-info {
+    text-align: center;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 2px solid #333;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.attack-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff0000, #ffffff);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.attack-info:hover {
+    border-color: #ffffff;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
+}
+
+.attack-info:hover::before {
+    opacity: 1;
+}
+
+.attack-icon {
+    font-size: 48px;
+    color: #ff0000;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+.attack-info h2 {
+    font-size: 48px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.attack-power {
+    font-size: 42px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.attack-status {
+    font-size: 18px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 10px 20px;
+    border: 1px solid #333;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Center Panel - ddstat Window */
+.center-panel {
+    flex: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+}
+
+.ddstat-window {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 2px solid #333;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.ddstat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid #333;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ddstat-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.ddstat-title i {
+    color: #ff0000;
+    font-size: 24px;
+}
+
+.ddstat-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    padding: 8px 16px;
+    border: 1px solid #333;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.control-btn.active {
+    background: #ff0000;
+    color: #ffffff;
+    border-color: #ff0000;
+}
+
+.control-btn:hover {
+    border-color: #ffffff;
+}
+
+.ddstat-content {
+    padding: 20px;
+}
+
+/* Canvas Graph */
+#network-graph {
+    width: 100%;
+    height: 300px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background: #000000;
+    margin-bottom: 20px;
+}
+
+/* Graph Stats */
+.graph-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #333;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.ddstat-footer {
+    padding: 20px 30px;
+    border-top: 1px solid #333;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Discord Profile in ddstat footer */
+.discord-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.discord-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    transition: all 0.3s ease;
+}
+
+.discord-avatar img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.discord-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.discord-username {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.discord-status {
+    font-size: 12px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.discord-profile, .attack-info, .ddstat-window {
+    animation: fadeIn 1s ease-out;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .side-panel {
+        flex: none;
+        height: 25vh;
+        border: none;
+        border-bottom: 1px solid #333;
+    }
+    
+    .center-panel {
+        flex: 1;
+        padding: 20px;
+    }
+    
+    .attack-info {
+        max-width: 300px;
+        padding: 30px;
+    }
+    
+    .ddstat-window {
+        max-width: 100%;
+    }
+    
+    #network-graph {
+        height: 200px;
+    }
+    
+    .graph-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .attack-icon {
+        font-size: 36px;
+    }
+    
+    .attack-info h2 {
+        font-size: 32px;
+    }
+    
+    .attack-power {
+        font-size: 28px;
+    }
+    
+    .login-button {
+        top: 10px;
+        left: 10px;
+        padding: 10px 15px;
+    }
+} 

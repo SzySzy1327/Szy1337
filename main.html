@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sela</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Button -->
+    <div class="login-button" onclick="showLoginMessage()">
+        <i class="fas fa-sign-in-alt"></i>
+        <span>Login</span>
+    </div>
+
+    <div class="container">
+        <!-- Left Side - TCP -->
+        <div class="side-panel left-panel">
+            <div class="attack-info">
+                <div class="attack-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h2>TCP</h2>
+                <div class="attack-power">75 Gbps</div>
+                <div class="attack-status">Ready</div>
+            </div>
+        </div>
+
+        <!-- Center - ddstat Window -->
+        <div class="center-panel">
+            <div class="ddstat-window">
+                <div class="ddstat-header">
+                    <div class="ddstat-title">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Medusa Attack Monitor</span>
+                    </div>
+                    <div class="ddstat-controls">
+                        <div class="control-btn active">Live</div>
+                        <div class="control-btn">History</div>
+                    </div>
+                </div>
+                <div class="ddstat-content">
+                    <canvas id="network-graph" width="700" height="300"></canvas>
+                    <div class="graph-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Current Power</span>
+                            <span class="stat-value" id="bandwidth-value">0.00 Gbps</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Average Power</span>
+                            <span class="stat-value" id="packets-value">0.00 Gbps</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Peak Power</span>
+                            <span class="stat-value" id="connections-value">0.00 Gbps</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ddstat-footer">
+                    <div class="discord-profile">
+                        <div class="discord-avatar">
+                            <img src="https://cdn.discordapp.com/avatars/902952072675217490/4d22a29fac308d89c8963a80ffe2bf50.png?size=1024" alt="Discord Avatar" id="discord-avatar">
+                        </div>
+                        <div class="discord-info">
+                            <span class="discord-username" id="discord-username">Loading...</span>
+                            <span class="discord-status" id="discord-status">Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - UDP -->
+        <div class="side-panel right-panel">
+            <div class="attack-info">
+                <div class="attack-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h2>UDP</h2>
+                <div class="attack-power">110 Gbps</div>
+                <div class="attack-status">Ready</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
