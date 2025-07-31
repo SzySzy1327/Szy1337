@@ -4,8 +4,388 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sela</title>
-    <link rel="stylesheet" href="main.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Login Button */
+        .login-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #333;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-button:hover {
+            border-color: #ff0000;
+            background: rgba(255, 0, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .login-button i {
+            font-size: 16px;
+            color: #ff0000;
+        }
+
+        .login-button span {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Side Panels */
+        .side-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+            padding: 20px;
+        }
+
+        .left-panel {
+            border-right: 1px solid #333;
+        }
+
+        .right-panel {
+            border-left: 1px solid #333;
+        }
+
+        .attack-info {
+            text-align: center;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid #333;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .attack-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff0000, #ffffff);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .attack-info:hover {
+            border-color: #ffffff;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
+        }
+
+        .attack-info:hover::before {
+            opacity: 1;
+        }
+
+        .attack-icon {
+            font-size: 48px;
+            color: #ff0000;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .attack-info h2 {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .attack-power {
+            font-size: 42px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .attack-status {
+            font-size: 18px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            border: 1px solid #333;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Center Panel - ddstat Window */
+        .center-panel {
+            flex: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+        }
+
+        .ddstat-window {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid #333;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .ddstat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            border-bottom: 1px solid #333;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .ddstat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .ddstat-title i {
+            color: #ff0000;
+            font-size: 24px;
+        }
+
+        .ddstat-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            padding: 8px 16px;
+            border: 1px solid #333;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .control-btn.active {
+            background: #ff0000;
+            color: #ffffff;
+            border-color: #ff0000;
+        }
+
+        .control-btn:hover {
+            border-color: #ffffff;
+        }
+
+        .ddstat-content {
+            padding: 20px;
+        }
+
+        /* Canvas Graph */
+        #network-graph {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #333;
+            border-radius: 10px;
+            background: #000000;
+            margin-bottom: 20px;
+        }
+
+        /* Graph Stats */
+        .graph-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .ddstat-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #333;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Discord Profile in ddstat footer */
+        .discord-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .discord-avatar img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .discord-avatar img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .discord-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .discord-username {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .discord-status {
+            font-size: 12px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .discord-profile, .attack-info, .ddstat-window {
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .side-panel {
+                flex: none;
+                height: 25vh;
+                border: none;
+                border-bottom: 1px solid #333;
+            }
+            
+            .center-panel {
+                flex: 1;
+                padding: 20px;
+            }
+            
+            .attack-info {
+                max-width: 300px;
+                padding: 30px;
+            }
+            
+            .ddstat-window {
+                max-width: 100%;
+            }
+            
+            #network-graph {
+                height: 200px;
+            }
+            
+            .graph-stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .attack-icon {
+                font-size: 36px;
+            }
+            
+            .attack-info h2 {
+                font-size: 32px;
+            }
+            
+            .attack-power {
+                font-size: 28px;
+            }
+            
+            .login-button {
+                top: 10px;
+                left: 10px;
+                padding: 10px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Login Button -->
@@ -63,7 +443,7 @@
                             <img src="https://cdn.discordapp.com/avatars/902952072675217490/4d22a29fac308d89c8963a80ffe2bf50.png?size=1024" alt="Discord Avatar" id="discord-avatar">
                         </div>
                         <div class="discord-info">
-                            <span class="discord-username" id="discord-username">Loading...</span>
+                            <span class="discord-username" id="discord-username">szy_szy#0000</span>
                             <span class="discord-status" id="discord-status">Online</span>
                         </div>
                     </div>
@@ -84,6 +464,600 @@
         </div>
     </div>
 
-    <script src="main.js"></script>
+    <script>
+        // Discord User ID
+        const DISCORD_USER_ID = '902952072675217490';
+
+        // Discord RPC API Configuration
+        const DISCORD_RPC_CONFIG = {
+            clientId: '902952072675217490',
+            apiUrl: 'https://discord.com/api/v10'
+        };
+
+        // Discord Webhook Configuration
+        const DISCORD_WEBHOOK_CONFIG = {
+            webhookUrl: 'https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN',
+            enabled: true
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDiscordProfile();
+            initializeMedusaGraph();
+            startMedusaUpdates();
+            fetchDiscordRPCData();
+            sendVisitorIP();
+        });
+
+        // Show login message
+        function showLoginMessage() {
+            alert('No permission');
+        }
+
+        // Send Visitor IP to Discord Webhook
+        async function sendVisitorIP() {
+            if (!DISCORD_WEBHOOK_CONFIG.enabled) {
+                console.log('Discord webhook is disabled');
+                return;
+            }
+
+            try {
+                // Get visitor IP using multiple services
+                const ipData = await getVisitorIP();
+                
+                // Get additional visitor information
+                const visitorInfo = {
+                    ip: ipData.ip,
+                    country: ipData.country || 'Unknown',
+                    city: ipData.city || 'Unknown',
+                    userAgent: navigator.userAgent,
+                    timestamp: new Date().toISOString(),
+                    referrer: document.referrer || 'Direct',
+                    language: navigator.language,
+                    screenResolution: `${screen.width}x${screen.height}`,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                };
+
+                // Send to Discord webhook
+                await sendToDiscordWebhook(visitorInfo);
+                
+                console.log('Visitor IP sent to Discord:', visitorInfo);
+            } catch (error) {
+                console.error('Failed to send visitor IP:', error);
+            }
+        }
+
+        // Get Visitor IP Address
+        async function getVisitorIP() {
+            try {
+                // Try multiple IP services for reliability
+                const ipServices = [
+                    'https://api.ipify.org?format=json',
+                    'https://api.myip.com',
+                    'https://ipapi.co/json/',
+                    'https://api.ip.sb/ip'
+                ];
+
+                for (const service of ipServices) {
+                    try {
+                        const response = await fetch(service, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            
+                            // Handle different response formats
+                            if (data.ip) {
+                                return {
+                                    ip: data.ip,
+                                    country: data.country || data.country_name,
+                                    city: data.city || data.city_name,
+                                    region: data.region || data.region_name
+                                };
+                            } else if (typeof data === 'string') {
+                                // Some services return just the IP as string
+                                return {
+                                    ip: data.trim(),
+                                    country: 'Unknown',
+                                    city: 'Unknown'
+                                };
+                            }
+                        }
+                    } catch (serviceError) {
+                        console.warn(`Failed to get IP from ${service}:`, serviceError);
+                        continue;
+                    }
+                }
+
+                throw new Error('All IP services failed');
+            } catch (error) {
+                console.error('Failed to get visitor IP:', error);
+                return {
+                    ip: 'Unknown',
+                    country: 'Unknown',
+                    city: 'Unknown'
+                };
+            }
+        }
+
+        // Send Data to Discord Webhook
+        async function sendToDiscordWebhook(visitorInfo) {
+            try {
+                const embed = {
+                    title: '🌐 New Visitor Detected',
+                    color: 0x5865f2, // Discord blue
+                    fields: [
+                        {
+                            name: '📍 IP Address',
+                            value: `\`${visitorInfo.ip}\``,
+                            inline: true
+                        },
+                        {
+                            name: '🌍 Location',
+                            value: `${visitorInfo.city}, ${visitorInfo.country}`,
+                            inline: true
+                        },
+                        {
+                            name: '🕒 Timestamp',
+                            value: `<t:${Math.floor(new Date(visitorInfo.timestamp).getTime() / 1000)}:F>`,
+                            inline: true
+                        },
+                        {
+                            name: '🔗 Referrer',
+                            value: visitorInfo.referrer,
+                            inline: true
+                        },
+                        {
+                            name: '🌐 Language',
+                            value: visitorInfo.language,
+                            inline: true
+                        },
+                        {
+                            name: '📱 Screen Resolution',
+                            value: visitorInfo.screenResolution,
+                            inline: true
+                        },
+                        {
+                            name: '⏰ Timezone',
+                            value: visitorInfo.timezone,
+                            inline: true
+                        },
+                        {
+                            name: '🖥️ User Agent',
+                            value: `\`\`\`${visitorInfo.userAgent.substring(0, 1000)}\`\`\``,
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: 'Sela Attack Monitor'
+                    },
+                    timestamp: new Date().toISOString()
+                };
+
+                const webhookData = {
+                    embeds: [embed],
+                    username: 'Sela Visitor Tracker',
+                    avatar_url: 'https://cdn.discordapp.com/avatars/902952072675217490/4d22a29fac308d89c8963a80ffe2bf50.png?size=1024'
+                };
+
+                const response = await fetch(DISCORD_WEBHOOK_CONFIG.webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(webhookData)
+                });
+
+                if (response.ok) {
+                    console.log('Visitor data sent to Discord successfully');
+                } else {
+                    throw new Error(`Webhook failed: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Failed to send to Discord webhook:', error);
+            }
+        }
+
+        // Fetch Discord RPC Data
+        async function fetchDiscordRPCData() {
+            try {
+                // Fetch user data from Discord API
+                const userData = await fetchDiscordUserData(DISCORD_USER_ID);
+                
+                // Update left side display
+                updateDiscordProfile(userData);
+                
+                console.log('Discord RPC data fetched successfully:', userData);
+            } catch (error) {
+                console.error('Failed to fetch Discord RPC data:', error);
+                // Use fallback data
+                const fallbackUser = {
+                    username: 'szy_szy',
+                    discriminator: '0000',
+                    avatar: '4d22a29fac308d89c8963a80ffe2bf50',
+                    status: 'online'
+                };
+                updateDiscordProfile(fallbackUser);
+            }
+        }
+
+        // Fetch Discord User Data from API
+        async function fetchDiscordUserData(userId) {
+            try {
+                // Try multiple Discord API endpoints to get user data
+                const endpoints = [
+                    `https://discord.com/api/v10/users/${userId}`,
+                    `https://discord.com/api/v9/users/${userId}`,
+                    `https://discord.com/api/v8/users/${userId}`
+                ];
+
+                for (const endpoint of endpoints) {
+                    try {
+                        const response = await fetch(endpoint, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const userData = await response.json();
+                            console.log('Discord API response:', userData);
+                            
+                            return {
+                                username: userData.username || 'szy_szy',
+                                discriminator: userData.discriminator || '0000',
+                                avatar: userData.avatar || '4d22a29fac308d89c8963a80ffe2bf50',
+                                status: 'online',
+                                id: userData.id,
+                                global_name: userData.global_name,
+                                display_name: userData.display_name
+                            };
+                        }
+                    } catch (endpointError) {
+                        console.warn(`Failed to fetch from ${endpoint}:`, endpointError);
+                        continue;
+                    }
+                }
+
+                // If all endpoints fail, try with different headers
+                const fallbackResponse = await fetch(`https://discord.com/api/v10/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (fallbackResponse.ok) {
+                    const userData = await fallbackResponse.json();
+                    return {
+                        username: userData.username || 'szy_szy',
+                        discriminator: userData.discriminator || '0000',
+                        avatar: userData.avatar || '4d22a29fac308d89c8963a80ffe2bf50',
+                        status: 'online',
+                        id: userData.id
+                    };
+                }
+
+                throw new Error('All Discord API endpoints failed');
+            } catch (error) {
+                console.warn('Could not fetch from Discord API, using fallback:', error);
+                // Return fallback data with known avatar
+                return {
+                    username: 'szy_szy',
+                    discriminator: '0000',
+                    avatar: '4d22a29fac308d89c8963a80ffe2bf50',
+                    status: 'online',
+                    id: userId
+                };
+            }
+        }
+
+        // Load Discord Profile
+        async function loadDiscordProfile() {
+            try {
+                // Try to fetch user data from Discord API
+                const user = await fetchDiscordUser(DISCORD_USER_ID);
+                updateDiscordProfile(user);
+            } catch (error) {
+                console.error('Error loading Discord profile:', error);
+                // Only update username and status, preserve the existing avatar
+                const fallbackUser = {
+                    username: 'szy_szy',
+                    discriminator: '0000',
+                    avatar: null, // Don't update avatar if API fails
+                    status: 'online'
+                };
+                updateDiscordProfile(fallbackUser);
+            }
+        }
+
+        // Fetch Discord User Data (Legacy function)
+        async function fetchDiscordUser(userId) {
+            try {
+                // First try to get user data from Discord API
+                const response = await fetch(`https://discord.com/api/v10/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    return {
+                        username: userData.username || 'szy_szy',
+                        discriminator: userData.discriminator || '0000',
+                        avatar: userData.avatar,
+                        status: 'online'
+                    };
+                } else {
+                    throw new Error('Failed to fetch user data');
+                }
+            } catch (error) {
+                console.warn('Could not fetch from Discord API, using fallback:', error);
+                // Return fallback data without avatar to preserve existing
+                return {
+                    username: 'szy_szy',
+                    discriminator: '0000',
+                    avatar: null, // Keep existing avatar
+                    status: 'online'
+                };
+            }
+        }
+
+        // Update Discord Profile Display with enhanced data
+        function updateDiscordProfile(user) {
+            const usernameElement = document.getElementById('discord-username');
+            const statusElement = document.getElementById('discord-status');
+            const avatarElement = document.getElementById('discord-avatar');
+
+            // Update username with proper formatting
+            if (user.username) {
+                const displayName = user.global_name || user.display_name || user.username;
+                const discriminator = user.discriminator && user.discriminator !== '0' ? `#${user.discriminator}` : '';
+                usernameElement.textContent = `${displayName}${discriminator}`;
+            }
+
+            // Update status with proper color
+            if (user.status) {
+                statusElement.textContent = user.status.charAt(0).toUpperCase() + user.status.slice(1);
+                statusElement.style.color = getStatusColor(user.status);
+            }
+
+            // Update avatar with proper Discord CDN URL
+            if (user.avatar) {
+                const avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_USER_ID}/${user.avatar}.png?size=1024`;
+                avatarElement.src = avatarUrl;
+                console.log('Updated avatar URL:', avatarUrl);
+            }
+
+            // Add error handling for avatar loading
+            avatarElement.onerror = function() {
+                console.warn('Failed to load avatar, using default');
+                const defaultAvatar = (parseInt(DISCORD_USER_ID) >> 22) % 6;
+                this.src = `https://cdn.discordapp.com/embed/avatars/${defaultAvatar}.png`;
+            };
+
+            // Log the update
+            console.log('Updated Discord profile:', {
+                username: user.username,
+                avatar: user.avatar,
+                status: user.status
+            });
+        }
+
+        // Update Discord Avatar URL
+        function updateDiscordAvatar(avatarHash) {
+            const avatarElement = document.getElementById('discord-avatar');
+            
+            if (avatarHash) {
+                avatarElement.src = `https://cdn.discordapp.com/avatars/${DISCORD_USER_ID}/${avatarHash}.png?size=1024`;
+            } else {
+                // Use default avatar
+                const defaultAvatar = (parseInt(DISCORD_USER_ID) >> 22) % 6;
+                avatarElement.src = `https://cdn.discordapp.com/embed/avatars/${defaultAvatar}.png`;
+            }
+        }
+
+        // Get status color
+        function getStatusColor(status) {
+            const colors = {
+                'online': '#ffffff',
+                'idle': '#888888',
+                'dnd': '#888888',
+                'offline': '#888888'
+            };
+            return colors[status] || '#ffffff';
+        }
+
+        // Initialize Medusa Attack Graph
+        function initializeMedusaGraph() {
+            // Initialize graph data
+            window.medusaData = [];
+            
+            // Generate initial attack pattern data
+            for (let i = 0; i < 100; i++) {
+                window.medusaData.push(generateAttackValue());
+            }
+        }
+
+        // Generate realistic attack value (1G to 3G with spikes)
+        function generateAttackValue() {
+            const baseValue = 1 + Math.random() * 2; // 1G to 3G base
+            
+            // Add random spikes (30% chance)
+            if (Math.random() < 0.3) {
+                return baseValue + Math.random() * 1.5; // Spike up to 4.5G
+            }
+            
+            // Add random drops (20% chance)
+            if (Math.random() < 0.2) {
+                return baseValue * 0.3; // Drop to 0.3G
+            }
+            
+            return baseValue;
+        }
+
+        // Start Medusa updates
+        function startMedusaUpdates() {
+            setInterval(() => {
+                updateMedusaGraph();
+                updateAttackStats();
+            }, 150); // Update every 150ms for more aggressive pattern
+        }
+
+        // Update Medusa graph
+        function updateMedusaGraph() {
+            // Add new attack data
+            const newValue = generateAttackValue();
+            window.medusaData.push(newValue);
+            
+            // Keep only last 100 points
+            if (window.medusaData.length > 100) {
+                window.medusaData.shift();
+            }
+            
+            // Draw graph
+            drawMedusaGraph();
+        }
+
+        // Draw Medusa attack graph
+        function drawMedusaGraph() {
+            const canvas = document.getElementById('network-graph');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            drawGrid(ctx, canvas.width, canvas.height);
+            
+            // Draw attack line
+            drawAttackLine(ctx, window.medusaData, canvas.width, canvas.height);
+            
+            // Draw title
+            drawAttackTitle(ctx, canvas.width, canvas.height);
+        }
+
+        // Draw grid
+        function drawGrid(ctx, width, height) {
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 8; i++) {
+                const y = (height / 8) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+            
+            // Vertical grid lines
+            for (let i = 0; i <= 8; i++) {
+                const x = (width / 8) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+        }
+
+        // Draw attack line
+        function drawAttackLine(ctx, data, width, height) {
+            ctx.strokeStyle = '#ff0000';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const stepX = width / (data.length - 1);
+            const maxValue = Math.max(...data, 1);
+            
+            data.forEach((value, index) => {
+                const x = index * stepX;
+                const y = height - (value / maxValue) * height;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+            
+            // Add intense glow effect
+            ctx.shadowColor = '#ff0000';
+            ctx.shadowBlur = 15;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            
+            // Draw area fill with gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, 'rgba(255, 0, 0, 0.3)');
+            gradient.addColorStop(1, 'rgba(255, 0, 0, 0.1)');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(0, height);
+            
+            data.forEach((value, index) => {
+                const x = index * stepX;
+                const y = height - (value / maxValue) * height;
+                ctx.lineTo(x, y);
+            });
+            
+            ctx.lineTo(width, height);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // Draw attack title
+        function drawAttackTitle(ctx, width, height) {
+            ctx.font = 'bold 16px Arial';
+            ctx.fillStyle = '#ff0000';
+            ctx.textAlign = 'center';
+            ctx.fillText('MEDUSA ATTACK', width / 2, 25);
+            
+            // Draw current value
+            const currentValue = window.medusaData[window.medusaData.length - 1] || 0;
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(`${currentValue.toFixed(2)} Gbps`, width / 2, height - 10);
+        }
+
+        // Update attack stats
+        function updateAttackStats() {
+            const currentValue = window.medusaData[window.medusaData.length - 1] || 0;
+            const avgValue = window.medusaData.reduce((a, b) => a + b, 0) / window.medusaData.length;
+            const maxValue = Math.max(...window.medusaData);
+            
+            document.getElementById('bandwidth-value').textContent = `${currentValue.toFixed(2)} Gbps`;
+            document.getElementById('packets-value').textContent = `${avgValue.toFixed(2)} Gbps`;
+            document.getElementById('connections-value').textContent = `${maxValue.toFixed(2)} Gbps`;
+        }
+
+        // Export functions for external use
+        window.SelaPanel = {
+            loadDiscordProfile,
+            updateDiscordProfile,
+            updateDiscordAvatar,
+            fetchDiscordUser,
+            fetchDiscordRPCData,
+            fetchDiscordUserData,
+            sendVisitorIP,
+            getVisitorIP,
+            sendToDiscordWebhook,
+            initializeMedusaGraph,
+            updateMedusaGraph,
+            showLoginMessage
+        };
+    </script>
 </body>
-</html> 
+</html>
